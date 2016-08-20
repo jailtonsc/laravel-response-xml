@@ -1,0 +1,15 @@
+{
+    "name": "jailtonsc/laravel-response-xml",
+    "description": "Add the method xml integrating the laravel's response, converting eloquent return to XML.",
+    "keywords": ["xml", "laravel", "eloquent"],
+    "license": "MIT",
+    "type": "project",
+    "require": {
+        "php": ">=5.5.9"
+    },
+    "autoload": {
+        "psr-4": {
+            "XmlResponse\\": "src/"
+        }
+    }
+}
