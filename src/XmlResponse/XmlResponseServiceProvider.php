@@ -5,6 +5,10 @@ namespace XmlResponse;
 use Illuminate\Support\Facades\Response;
 use Illuminate\Support\ServiceProvider;
 
+/**
+ * Class XmlResponseServiceProvider
+ * @package XmlResponse
+ */
 class XmlResponseServiceProvider extends ServiceProvider
 {
     public function register()
@@ -22,7 +26,7 @@ class XmlResponseServiceProvider extends ServiceProvider
     public function boot()
     {
         $this->publishes([
-            __DIR__.'/Config/config.php' => config_path('xml.php'),
+            __DIR__.'/Config/Config.php' => config_path('xml.php'),
         ]);
     }
 }
