@@ -22,7 +22,7 @@ class XmlResponseServiceProvider extends ServiceProvider
     public function boot()
     {
         $this->publishes([
-            __DIR__.'/config/config.php' => config_path('xml.php'),
+            __DIR__.'/Config/config.php' => config_path('xml.php'),
         ]);
     }
 }
