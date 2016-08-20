@@ -19,11 +19,10 @@ class XmlResponse
 
     /**
      * XmlResponse constructor.
-     * @param Container $container
      */
-    public function __construct(Container $container)
+    public function __construct()
     {
-        $this->container = $container;
+        $this->container = new Container();
     }
 
     /**
