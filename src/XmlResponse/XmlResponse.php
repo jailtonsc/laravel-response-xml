@@ -71,13 +71,31 @@ class XmlResponse
         return $value;
     }
 
+
+    /**
+     * @param array $attribute
+     * @param \SimpleXMLElement $xml
+     * @throws XmlResponseException
+     */
+    private function addAttribute($attribute = [], \SimpleXMLElement $xml)
+    {
+        if (!is_array($attribute)){
+            throw new XmlResponseException('Attribute in the header is not an array.');
+        }
+
+        foreach ($attribute as $key => $value){
+            $xml->addAttribute($key, $value);
+        }
+    }
+
     /**
      * @param $array
      * @param bool $xml
+     * @param array $headerAttribute
      * @return mixed
      * @throws XmlResponseException
      */
-    function array2xml($array, $xml = false)
+    function array2xml($array, $xml = false, $headerAttribute = [])
     {
         if (!$this->isType(gettype($array))){
             throw new XmlResponseException('It is not possible to convert the data');
@@ -90,6 +108,9 @@ class XmlResponse
         if($xml === false){
             $xml = new \SimpleXMLElement($this->app()->get('xml.template'));
         }
+
+        $this->addAttribute($headerAttribute, $xml);
+
         foreach($array as $key => $value){
             if(is_array($value)){
 
@@ -99,7 +120,7 @@ class XmlResponse
                     $this->array2xml($value, $xml->addChild($this->caseSensitive($key)));
                 }
             } else{
-                $xml->addChild($key, $value);
+                $xml->addChild($key, htmlspecialchars($value));
             }
         }
 
