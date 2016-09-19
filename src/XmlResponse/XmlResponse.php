@@ -13,16 +13,24 @@ use Illuminate\Container\Container;
 class XmlResponse
 {
     /**
-     * @var Container
+     * @var
      */
-    private $container;
+    private $caseSensitive;
+
+    /**
+     * @var
+     */
+    private $template;
 
     /**
      * XmlResponse constructor.
      */
     public function __construct()
     {
-        $this->container = new Container();
+        $app = $this->app();
+
+        $this->caseSensitive = $app->get('xml.caseSensitive');
+        $this->template = $app->get('xml.template');
     }
 
     /**
@@ -30,7 +38,8 @@ class XmlResponse
      */
     public function app()
     {
-        return $this->container->getInstance()->make('config');
+        $container = new Container();
+        return $container->getInstance()->make('config');
     }
 
     /**
@@ -38,8 +47,9 @@ class XmlResponse
      */
     private function header()
     {
-        $header['Content-Type'] = 'application/xml';
-        return $header;
+        return $header = [
+            'Content-Type' => 'application/xml'
+        ];
     }
 
     /**
@@ -62,9 +72,7 @@ class XmlResponse
      */
     private function caseSensitive($value)
     {
-        $caseSensitive = $this->app()->get('xml.caseSensitive');
-
-        if ($caseSensitive){
+        if ($this->caseSensitive){
             $value = explode('_', $value);
             $value = lcfirst(join('', array_map("ucfirst", $value)));
         }
@@ -106,14 +114,13 @@ class XmlResponse
         }
 
         if($xml === false){
-            $xml = new \SimpleXMLElement($this->app()->get('xml.template'));
+            $xml = new \SimpleXMLElement($this->template);
         }
 
         $this->addAttribute($headerAttribute, $xml);
 
         foreach($array as $key => $value){
             if(is_array($value)){
-
                 if (is_numeric($key)){
                     $this->array2xml($value, $xml->addChild($this->caseSensitive('row_' . $key)));
                 } else {
