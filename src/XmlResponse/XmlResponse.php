@@ -127,7 +127,7 @@ class XmlResponse
                     $this->array2xml($value, $xml->addChild($this->caseSensitive($key)));
                 }
             } else{
-                $xml->addChild($key, htmlspecialchars($value));
+                $xml->addChild($this->caseSensitive($key), htmlspecialchars($value));
             }
         }
 
