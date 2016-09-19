@@ -47,7 +47,7 @@ class XmlResponse
      */
     private function header()
     {
-        return $header = [
+        return [
             'Content-Type' => 'application/xml'
         ];
     }
