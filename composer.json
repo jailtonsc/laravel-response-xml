@@ -4,8 +4,7 @@
     "keywords": ["xml", "laravel", "eloquent", "response"],
     "license": "MIT",
     "require": {
-        "php": ">=5.5.9",
-        "robrichards/xmlseclibs": "^2.0"
+        "php": ">=5.5.9"
     },
     "autoload": {
         "psr-4": {
