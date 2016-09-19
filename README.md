@@ -23,12 +23,6 @@ php artisan vendor:publish
 
 ### Example
 ```php
-return response()->xml(User::all());
-```
-
-or
-
-```php
 Route::get('/', function () {
     return response()->xml(User::all());
 });
