@@ -1,6 +1,10 @@
 # Laravel Response XML
 Add the  method "xml" integrating the laravel's response, converting eloquent return to XML.
 
+[![Total Downloads](https://poser.pugx.org/jailtonsc/laravel-response-xml/d/total.svg)](https://packagist.org/packages/jailtonsc/laravel-response-xml)
+[![Latest Stable Version](https://poser.pugx.org/jailtonsc/laravel-response-xml/v/stable.svg)](https://packagist.org/packages/jailtonsc/laravel-response-xml)
+[![Latest Unstable Version](https://poser.pugx.org/jailtonsc/laravel-response-xml/v/unstable.svg)](https://packagist.org/packages/jailtonsc/laravel-response-xml)
+
 ### Composer Installation
 
 ```php
@@ -22,12 +26,6 @@ php artisan vendor:publish
 ```
 
 ### Example
-```php
-return response()->xml(User::all());
-```
-
-or
-
 ```php
 Route::get('/', function () {
     return response()->xml(User::all());
