@@ -7,7 +7,7 @@ Add the  method "xml" integrating the laravel's response, converting eloquent re
 composer require jailtonsc/laravel-response-xml
 ```
 
-### Integration with Laravel 5. *
+### Integration with Laravel 5.3.*
 
 Add in config/app.php in place providers
 
