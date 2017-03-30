@@ -2,6 +2,7 @@
 
 namespace XmlResponse;
 
+use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Support\Facades\Response;
 use XmlResponse\Exception\XmlResponseException;
 use Illuminate\Container\Container;
@@ -105,12 +106,13 @@ class XmlResponse
      */
     function array2xml($array, $xml = false, $headerAttribute = [])
     {
-        if (!$this->isType(gettype($array))){
-            throw new XmlResponseException('It is not possible to convert the data');
+
+        if (is_object($array) && $array instanceof Arrayable) {
+            $array = $array->toArray();
         }
 
-        if (!is_array($array)){
-            $array = $array->toArray();
+        if (!$this->isType(gettype($array))){
+            throw new XmlResponseException('It is not possible to convert the data');
         }
 
         if($xml === false){
@@ -120,12 +122,17 @@ class XmlResponse
         $this->addAttribute($headerAttribute, $xml);
 
         foreach($array as $key => $value){
-            if(is_array($value)){
-                if (is_numeric($key)){
+
+            if(is_array($value)) {
+                if (is_numeric($key)) {
                     $this->array2xml($value, $xml->addChild($this->caseSensitive('row_' . $key)));
                 } else {
                     $this->array2xml($value, $xml->addChild($this->caseSensitive($key)));
                 }
+            }elseif (is_object($value)) {
+                $this->array2xml($value, $xml->addChild($this->caseSensitive((new \ReflectionClass(get_class($value)))->getShortName())));
+            }elseif(is_null($value)){
+                continue;
             } else{
                 $xml->addChild($this->caseSensitive($key), htmlspecialchars($value));
             }
