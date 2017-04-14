@@ -23,6 +23,8 @@ class XmlResponse
      */
     private $template;
 
+    private $showEmptyField;
+
     /**
      * XmlResponse constructor.
      */
@@ -32,6 +34,7 @@ class XmlResponse
 
         $this->caseSensitive = $app->get('xml.caseSensitive');
         $this->template = $app->get('xml.template');
+        $this->showEmptyField = $app->get('xml.showEmptyField');
     }
 
     /**
@@ -104,7 +107,7 @@ class XmlResponse
      * @return mixed
      * @throws XmlResponseException
      */
-    function array2xml($array, $xml = false, $headerAttribute = [])
+    public function array2xml($array, $xml = false, $headerAttribute = [])
     {
 
         if (is_object($array) && $array instanceof Arrayable) {
@@ -131,10 +134,10 @@ class XmlResponse
                 }
             }elseif (is_object($value)) {
                 $this->array2xml($value, $xml->addChild($this->caseSensitive((new \ReflectionClass(get_class($value)))->getShortName())));
-            }elseif(is_null($value)){
-                continue;
             } else{
-                $xml->addChild($this->caseSensitive($key), htmlspecialchars($value));
+                if (!is_null($value) || $this->showEmptyField) {
+                    $xml->addChild($this->caseSensitive($key), htmlspecialchars($value));
+                }
             }
         }
 

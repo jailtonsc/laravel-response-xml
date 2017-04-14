@@ -12,5 +12,6 @@ return [
     |
     */
     'template' => '<root></root>',
-    'caseSensitive' => false
+    'caseSensitive' => false,
+    'showEmptyField' => true //Show empty field
 ];
