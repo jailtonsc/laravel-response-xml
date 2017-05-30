@@ -107,7 +107,7 @@ class XmlResponse
      * @return mixed
      * @throws XmlResponseException
      */
-    public function array2xml($array, $xml = false, $headerAttribute = [])
+    public function array2xml($array, $xml = false, $headerAttribute = [], $status = 200)
     {
 
         if (is_object($array) && $array instanceof Arrayable) {
@@ -141,6 +141,6 @@ class XmlResponse
             }
         }
 
-        return Response::make($xml->asXML(), 200, $this->header());
+        return Response::make($xml->asXML(), $status, $this->header());
     }
 }
