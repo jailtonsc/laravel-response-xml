@@ -23,7 +23,15 @@ class XmlResponse
      */
     private $template;
 
+    /**
+     * @var
+     */
     private $showEmptyField;
+
+    /**
+     * @var
+     */
+    private $charset;
 
     /**
      * XmlResponse constructor.
@@ -35,6 +43,7 @@ class XmlResponse
         $this->caseSensitive = $app->get('xml.caseSensitive');
         $this->template = $app->get('xml.template');
         $this->showEmptyField = $app->get('xml.showEmptyField');
+        $this->charset = $app->get('xml.charset');
     }
 
     /**
@@ -52,8 +61,33 @@ class XmlResponse
     private function header()
     {
         return [
-            'Content-Type' => 'application/xml'
+            'Content-Type' => $this->charset()
         ];
+    }
+
+    /**
+     * @param $array
+     * @return string
+     */
+    private function charset($header = [])
+    {
+        $charset = 'application/xml; ';
+
+        if (!empty($this->charset)) {
+            $charset .= "charset={$this->charset}";
+        }
+
+        return $charset;
+    }
+
+    /**
+     * add encoding
+     */
+    private function encodingXml()
+    {
+        if (!empty($this->charset) && strpos($this->template, 'encoding') === false) {
+            $this->template = "<?xml version=\"1.0\" encoding=\"{$this->charset}\"?>{$this->template}";
+        }
     }
 
     /**
@@ -76,7 +110,7 @@ class XmlResponse
      */
     private function caseSensitive($value)
     {
-        if ($this->caseSensitive){
+        if ($this->caseSensitive) {
             $value = explode('_', $value);
             $value = lcfirst(join('', array_map("ucfirst", $value)));
         }
@@ -91,11 +125,11 @@ class XmlResponse
      */
     private function addAttribute($attribute = [], \SimpleXMLElement $xml)
     {
-        if (!is_array($attribute)){
+        if (!is_array($attribute)) {
             throw new XmlResponseException('Attribute in the header is not an array.');
         }
 
-        foreach ($attribute as $key => $value){
+        foreach ($attribute as $key => $value) {
             $xml->addAttribute($key, $value);
         }
     }
@@ -114,27 +148,28 @@ class XmlResponse
             $array = $array->toArray();
         }
 
-        if (!$this->isType(gettype($array))){
+        if (!$this->isType(gettype($array))) {
             throw new XmlResponseException('It is not possible to convert the data');
         }
 
-        if($xml === false){
+        if ($xml === false) {
+            $this->encodingXml();
             $xml = new \SimpleXMLElement($this->template);
         }
 
         $this->addAttribute($headerAttribute, $xml);
 
-        foreach($array as $key => $value){
+        foreach ($array as $key => $value) {
 
-            if(is_array($value)) {
+            if (is_array($value)) {
                 if (is_numeric($key)) {
                     $this->array2xml($value, $xml->addChild($this->caseSensitive('row_' . $key)));
                 } else {
                     $this->array2xml($value, $xml->addChild($this->caseSensitive($key)));
                 }
-            }elseif (is_object($value)) {
+            } elseif (is_object($value)) {
                 $this->array2xml($value, $xml->addChild($this->caseSensitive((new \ReflectionClass(get_class($value)))->getShortName())));
-            } else{
+            } else {
                 if (!is_null($value) || $this->showEmptyField) {
                     $xml->addChild($this->caseSensitive($key), htmlspecialchars($value));
                 }

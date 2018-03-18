@@ -13,5 +13,6 @@ return [
     */
     'template' => '<root></root>',
     'caseSensitive' => false,
-    'showEmptyField' => true //Show empty field
+    'showEmptyField' => true, //Show empty field
+    'charset' => 'utf-8'
 ];
