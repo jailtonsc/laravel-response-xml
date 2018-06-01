@@ -171,7 +171,11 @@ class XmlResponse
                 $this->array2xml($value, $xml->addChild($this->caseSensitive((new \ReflectionClass(get_class($value)))->getShortName())));
             } else {
                 if (!is_null($value) || $this->showEmptyField) {
-                    $xml->addChild($this->caseSensitive($key), htmlspecialchars($value));
+                    if (is_numeric($key)) {
+                        $xml->addChild($this->caseSensitive('row_' . $key), htmlspecialchars($value));
+                    } else {
+                        $xml->addChild($this->caseSensitive($key), htmlspecialchars($value));
+                    }
                 }
             }
         }
