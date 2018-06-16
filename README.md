@@ -43,9 +43,13 @@ Route::get('/', function () {
 ### Example
 
 **template**: xml template
+
 **caseSensitive**: case sensitive xml tag
+
 **showEmptyField**: Show empty field
+
 **charset**: encoding
+
 **rowName**: line name if it is an array
 
 
