@@ -32,7 +32,7 @@ Route::get('/', function () {
 });
 ```
 
-Status Code Definitions
+With status code
 
 ```php
 Route::get('/', function () {
@@ -41,6 +41,9 @@ Route::get('/', function () {
 ```
 
 ### Configuration
+
+file config/xml.php
+
 
 **template**: xml template.
 
