@@ -34,6 +34,11 @@ class XmlResponse
     private $charset;
 
     /**
+     * @var
+     */
+    private $rowName;
+
+    /**
      * XmlResponse constructor.
      */
     public function __construct()
@@ -44,6 +49,7 @@ class XmlResponse
         $this->template = $app->get('xml.template');
         $this->showEmptyField = $app->get('xml.showEmptyField');
         $this->charset = $app->get('xml.charset');
+        $this->rowName = $app->get('xml.rowName');
     }
 
     /**
@@ -117,6 +123,14 @@ class XmlResponse
         return $value;
     }
 
+    private function rowName($row) 
+    {
+        if (!empty($this->rowName)) {
+            return $this->rowName;
+        }
+        return 'row_' . $key;
+    }
+
 
     /**
      * @param array $attribute
@@ -163,7 +177,7 @@ class XmlResponse
 
             if (is_array($value)) {
                 if (is_numeric($key)) {
-                    $this->array2xml($value, $xml->addChild($this->caseSensitive('row_' . $key)));
+                    $this->array2xml($value, $xml->addChild($this->caseSensitive($this->rowName($key))));
                 } else {
                     $this->array2xml($value, $xml->addChild($this->caseSensitive($key)));
                 }
@@ -172,7 +186,7 @@ class XmlResponse
             } else {
                 if (!is_null($value) || $this->showEmptyField) {
                     if (is_numeric($key)) {
-                        $xml->addChild($this->caseSensitive('row_' . $key), htmlspecialchars($value));
+                        $xml->addChild($this->caseSensitive($this->rowName($key)), htmlspecialchars($value));
                     } else {
                         $xml->addChild($this->caseSensitive($key), htmlspecialchars($value));
                     }
