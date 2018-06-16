@@ -40,17 +40,17 @@ Route::get('/', function () {
 });
 ```
 
-### Example
+### Configuration
 
-**template**: xml template
+**template**: xml template.
 
-**caseSensitive**: case sensitive xml tag
+**caseSensitive**: case sensitive xml tag.
 
-**showEmptyField**: Show empty field
+**showEmptyField**: Show empty field.
 
-**charset**: encoding
+**charset**: encoding.
 
-**rowName**: line name if it is an array
+**rowName**: line name if it is an array.
 
 
 ### License
