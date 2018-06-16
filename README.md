@@ -11,7 +11,7 @@ Add the  method "xml" integrating the laravel's response, converting eloquent re
 composer require jailtonsc/laravel-response-xml
 ```
 
-### Integration with Laravel 5.3.*
+### Integration with Laravel 5.*
 
 Add in config/app.php in place providers
 
@@ -31,6 +31,23 @@ Route::get('/', function () {
     return response()->xml(User::all());
 });
 ```
+
+Status Code Definitions
+
+```php
+Route::get('/', function () {
+    return response()->xml(User::all(), 404);
+});
+```
+
+### Example
+
+**template**: xml template
+**caseSensitive**: case sensitive xml tag
+**showEmptyField**: Show empty field
+**charset**: encoding
+**rowName**: line name if it is an array
+
 
 ### License
 
