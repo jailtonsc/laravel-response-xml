@@ -16,27 +16,27 @@ class XmlResponse
     /**
      * @var
      */
-    private $caseSensitive;
+    protected $caseSensitive;
 
     /**
      * @var
      */
-    private $template;
+    protected $template;
 
     /**
      * @var
      */
-    private $showEmptyField;
+    protected $showEmptyField;
 
     /**
      * @var
      */
-    private $charset;
+    protected $charset;
 
     /**
      * @var
      */
-    private $rowName;
+    protected $rowName;
 
     /**
      * XmlResponse constructor.
