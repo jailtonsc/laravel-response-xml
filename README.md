@@ -19,6 +19,12 @@ Add in config/app.php in place providers
 XmlResponse\XmlResponseServiceProvider::class
 ```
 
+Add in config/app.php in place aliases
+
+```php
+'Xml' => XmlResponse\Facades\XmlFacade::class
+```
+
 ### Publish
 
 ```php
@@ -51,6 +57,23 @@ $config = [
 Route::get('/', function () {
     return response()->xml(User::all(), 200, $config);
 });
+```
+
+Return string xml
+
+```php
+$xml = Xml::asXml(User::all());
+```
+
+Or
+
+```php
+$config = [
+        'template' => '<test></test>',
+        'rowName' => 'name'
+    ];
+
+$xml = Xml::asXml(User::all(), $config);
 ```
 
 ### Configuration

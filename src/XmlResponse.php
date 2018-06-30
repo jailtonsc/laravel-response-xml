@@ -222,9 +222,9 @@ class XmlResponse
      * @return string 
      * @throws XmlResponseException
      */
-    public function asXml($array = [])
+    public function asXml($array = [], $config = [])
     {
         $this->asXml = true;
-        return $this->array2xml($array);
+        return $this->array2xml($array, false, $config);
     }
 }
