@@ -16,27 +16,27 @@ class XmlResponse
     /**
      * @var
      */
-    protected $caseSensitive;
+    private $caseSensitive;
 
     /**
      * @var
      */
-    protected $template;
+    private $template;
 
     /**
      * @var
      */
-    protected $showEmptyField;
+    private $showEmptyField;
 
     /**
      * @var
      */
-    protected $charset;
+    private $charset;
 
     /**
      * @var
      */
-    protected $rowName;
+    private $rowName;
 
     /**
      * XmlResponse constructor.
@@ -131,20 +131,33 @@ class XmlResponse
         return 'row_' . $row;
     }
 
+    /**
+     * @param $value
+     * @return bool
+     */
+    private function isConfig($value)
+    {
+        return in_array($value, [
+            'template',
+            'caseSensitive',
+            'showEmptyField',
+            'charset',
+            'rowName'
+        ]);
+    }
 
     /**
-     * @param array $attribute
-     * @param \SimpleXMLElement $xml
-     * @throws XmlResponseException
+     * replaces the current setting
+     * 
+     * @param array $config
+     * @return bool
      */
-    private function addAttribute($attribute = [], \SimpleXMLElement $xml)
+    private function config($config = []) 
     {
-        if (!is_array($attribute)) {
-            throw new XmlResponseException('Attribute in the header is not an array.');
-        }
-
-        foreach ($attribute as $key => $value) {
-            $xml->addAttribute($key, $value);
+        foreach ($config as $key => $value) {
+            if ($this->isConfig($key)) {
+                $this->{$key} = $value;
+            }
         }
     }
 
@@ -155,9 +168,8 @@ class XmlResponse
      * @return mixed
      * @throws XmlResponseException
      */
-    public function array2xml($array, $xml = false, $headerAttribute = [], $status = 200)
+    public function array2xml($array, $xml = false, $config = [], $status = 200)
     {
-
         if (is_object($array) && $array instanceof Arrayable) {
             $array = $array->toArray();
         }
@@ -166,12 +178,12 @@ class XmlResponse
             throw new XmlResponseException('It is not possible to convert the data');
         }
 
+        $this->config($config);
+
         if ($xml === false) {
             $this->encodingXml();
             $xml = new \SimpleXMLElement($this->template);
         }
-
-        $this->addAttribute($headerAttribute, $xml);
 
         foreach ($array as $key => $value) {
 

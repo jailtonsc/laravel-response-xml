@@ -22,8 +22,8 @@ class XmlResponseServiceProvider extends ServiceProvider
             __DIR__.'/Config/Config.php' => config_path('xml.php'),
         ]);
 
-        Response::macro('xml', function ($value, $status = 200, $headerTemplate = []) {
-            return (new XmlResponse())->array2xml($value, false, $headerTemplate, $status);
+        Response::macro('xml', function ($value, $status = 200, $config = []) {
+            return (new XmlResponse())->array2xml($value, false, $config, $status);
         });
     }
 }
