@@ -40,6 +40,19 @@ Route::get('/', function () {
 });
 ```
 
+Setting by code
+
+```php
+$config = [
+        'template' => '<test></test>',
+        'rowName' => 'name'
+    ];
+
+Route::get('/', function () {
+    return response()->xml(User::all(), 200, $config);
+});
+```
+
 ### Configuration
 
 file config/xml.php
