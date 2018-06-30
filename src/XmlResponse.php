@@ -39,6 +39,11 @@ class XmlResponse
     private $rowName;
 
     /**
+     * @var boolean
+     */
+    private $asXml = false;
+
+    /**
      * XmlResponse constructor.
      */
     public function __construct()
@@ -206,6 +211,20 @@ class XmlResponse
             }
         }
 
+        if ($this->asXml) {
+            return $xml->asXML();
+        }
         return Response::make($xml->asXML(), $status, $this->header());
+    }
+
+    /**
+     * @param $array
+     * @return string 
+     * @throws XmlResponseException
+     */
+    public function asXml($array = [])
+    {
+        $this->asXml = true;
+        return $this->array2xml($array);
     }
 }
